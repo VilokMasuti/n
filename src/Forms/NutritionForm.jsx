@@ -48,6 +48,7 @@ const NutritionForm = ({ onClose, clientId }) => {
 
     addNutritionData(clientId, {
       ...formData,
+      id: Date.now(), // Add unique ID
       calories: +formData.calories,
       protein: +formData.protein,
       carbs: +formData.carbs,

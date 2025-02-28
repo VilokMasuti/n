@@ -60,7 +60,7 @@ const ClientDetails = ({ setShowEditClient, setShowAddNutrition }) => {
                   <p key={idx} className="text-sm">
                     <span className="font-medium">{field}:</span>
                     {field === 'Health Conditions'
-                      ? selectedClient.healthConditions?.join(', ') || 'None'
+                      ? selectedClient.healthConditions || 'None'
                       : selectedClient[field.toLowerCase()] +
                         (field === 'Weight'
                           ? ' kg'

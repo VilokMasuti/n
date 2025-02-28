@@ -53,7 +53,6 @@ export const Dashboard = () => {
           )}
         </button>
       </div>
-
       {/* Sidebar */}
       <div
         className={`${
@@ -102,7 +101,6 @@ export const Dashboard = () => {
         </main>
       </div>
       {/* Modal forms */}
-
       {showAddClient && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
@@ -114,12 +112,13 @@ export const Dashboard = () => {
           </div>
         </div>
       )}
-
+      // Edit
       {showEditClient && selectedClient && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
             <h2 className="text-xl font-semibold mb-4">Edit Client</h2>
             <ClientForm
+              key={selectedClient.id}
               onClose={() => setShowEditClient(false)}
               isEdit={true}
               client={selectedClient}
@@ -127,7 +126,6 @@ export const Dashboard = () => {
           </div>
         </div>
       )}
-
       {showAddNutrition && selectedClient && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">

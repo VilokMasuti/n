@@ -56,7 +56,7 @@ const ClientList = ({ setShowEditClient, setShowAddNutrition }) => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {client.healthConditions.length
-                      ? client.healthConditions.join(', ')
+                      ? client.healthConditions
                       : 'None'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
@@ -66,7 +66,7 @@ const ClientList = ({ setShowEditClient, setShowAddNutrition }) => {
                         setSelectedClient(client);
                         setShowEditClient(true);
                       }}
-                      className=" mr-3 "
+                      className="text-indigo-600 hover:text-indigo-900 mr-3 "
                     >
                       <PencilIcon className="w-5 h-5  cursor-pointer" />
                     </button>

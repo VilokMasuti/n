@@ -1,10 +1,9 @@
 /* eslint-disable no-unused-vars */
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { Tooltip } from 'react-tooltip';
 import { useClientContext } from '../context/ClientContext';
-
 const ClientForm = ({ onClose, isEdit, client }) => {
   const { addClient, updateClient } = useClientContext();
   const [formData, setFormData] = useState({
@@ -12,9 +11,29 @@ const ClientForm = ({ onClose, isEdit, client }) => {
     age: isEdit ? client.age : '',
     weight: isEdit ? client.weight : '',
     height: isEdit ? client.height : '',
-    healthConditions: isEdit ? client.healthConditions.join(', ') : '',
+    healthConditions: isEdit ? client.healthConditions : '',
   });
   const [errors, setErrors] = useState({});
+  // Add useEffect to handle prop updates
+  useEffect(() => {
+    if (isEdit && client) {
+      setFormData({
+        name: client.name,
+        age: client.age,
+        weight: client.weight,
+        height: client.height,
+        healthConditions: client.healthConditions,
+      });
+    } else {
+      setFormData({
+        name: '',
+        age: '',
+        weight: '',
+        height: '',
+        healthConditions: '',
+      });
+    }
+  }, [isEdit, client]); // Update form when isEdit or client changes
 
   // Validate form fields
   const validate = () => {
@@ -36,7 +55,8 @@ const ClientForm = ({ onClose, isEdit, client }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!validate()) return;
-    isEdit ? updateClient(client.id, formData) : addClient(formData);
+    // Pass merged object with ID for updates
+    isEdit ? updateClient({ ...formData, id: client.id }) : addClient(formData);
     toast.success(`Client ${isEdit ? 'updated' : 'added'} successfully!`);
     setFormData({
       name: '',
