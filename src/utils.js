@@ -1,0 +1,67 @@
+export const initialClients = [
+  {
+    id: 1,
+    name: 'Krishna',
+    age: 35,
+    weight: 78,
+    height: 180,
+    healthConditions: ['Diabetes', 'Hypertension'],
+    nutritionData: [
+      { date: '2023-01-15', calories: 2100, protein: 95, carbs: 210, fat: 70 },
+      { date: '2023-02-15', calories: 2000, protein: 100, carbs: 200, fat: 65 },
+      { date: '2023-03-15', calories: 1950, protein: 105, carbs: 190, fat: 60 },
+    ],
+  },
+  {
+    id: 2,
+    name: 'Radha',
+    age: 28,
+    weight: 65,
+    height: 165,
+    healthConditions: ['Celiac Disease'],
+    nutritionData: [
+      { date: '2023-01-20', calories: 1800, protein: 85, carbs: 180, fat: 60 },
+      { date: '2023-02-20', calories: 1750, protein: 90, carbs: 170, fat: 55 },
+      { date: '2023-03-20', calories: 1700, protein: 95, carbs: 160, fat: 50 },
+    ],
+  },
+  {
+    id: 3,
+    name: 'Shiva',
+    age: 42,
+    weight: 88,
+    height: 185,
+    healthConditions: ['High Cholesterol'],
+    nutritionData: [
+      { date: '2023-01-25', calories: 2200, protein: 110, carbs: 220, fat: 75 },
+      { date: '2023-02-25', calories: 2150, protein: 115, carbs: 210, fat: 70 },
+      { date: '2023-03-25', calories: 2100, protein: 120, carbs: 200, fat: 65 },
+    ],
+  },
+  {
+    id: 4,
+    name: 'Pravthi',
+    age: 31,
+    weight: 62,
+    height: 170,
+    healthConditions: [],
+    nutritionData: [
+      { date: '2023-01-10', calories: 1900, protein: 90, carbs: 190, fat: 65 },
+      { date: '2023-02-10', calories: 1850, protein: 95, carbs: 180, fat: 60 },
+      { date: '2023-03-10', calories: 1800, protein: 100, carbs: 170, fat: 55 },
+    ],
+  },
+  {
+    id: 5,
+    name: 'Raghavendra',
+    age: 45,
+    weight: 92,
+    height: 188,
+    healthConditions: ['Arthritis', 'Hypertension'],
+    nutritionData: [
+      { date: '2023-01-05', calories: 2300, protein: 115, carbs: 230, fat: 80 },
+      { date: '2023-02-05', calories: 2250, protein: 120, carbs: 220, fat: 75 },
+      { date: '2023-03-05', calories: 2200, protein: 125, carbs: 210, fat: 70 },
+    ],
+  },
+];
