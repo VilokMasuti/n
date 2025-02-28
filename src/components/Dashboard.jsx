@@ -4,6 +4,7 @@ import ClientForm from '../Forms/ClientForm';
 import NutritionForm from '../Forms/NutritionForm';
 import ClientDetails from './ClientDetails';
 import ClientList from './ClientList';
+import FuzzyText from './FuzzyText';
 import Sidebar from './Sidebar';
 
 export const Dashboard = () => {
@@ -65,8 +66,8 @@ export const Dashboard = () => {
       <div className="flex-1 flex flex-col overflow-hidden">
         <header className="bg-white shadow-sm z-10">
           <div className="max-w-7xl mx-auto py-5 px-18 sm:px-18 lg:px-8">
-            <h1 className="text-2xl font-semibold  antialiased text-gray-900">
-              <span className=" text-green-500 animate-pulse duration-1000  ease-in-out   uppercase underline decoration-green-500 decoration-4  px-2">
+            <h1 className="text-sm sm:text-2xl  font-semibold  antialiased text-gray-900">
+              <span className=" text-green-500 animate-pulse duration-1000  ease-in-out   uppercase underline decoration-green-500 decoration-4  px-2 text-sm sm:text-2xl  ">
                 Nutritionist
               </span>
               Dashboard
@@ -85,17 +86,31 @@ export const Dashboard = () => {
                 />
               </div>
               {/* Client details section */}
-              <div className="w-full lg:w-1/2">
-                {selectedClient &&
-                  !showAddClient &&
-                  !showEditClient &&
-                  !showAddNutrition && (
-                    <ClientDetails
-                      setShowEditClient={setShowEditClient}
-                      setShowAddNutrition={setShowAddNutrition}
-                    />
-                  )}
-              </div>
+              {!selectedClient &&
+              !showAddClient &&
+              !showEditClient &&
+              !showAddNutrition ? (
+                <div className="w-full  lg:w-1/2">
+                  <FuzzyText
+                    text=" SELECT*THE*CLIENT*TO*VIEW*DETAILS*"
+                    onHover="speedUp"
+                    spinDuration={15}
+                    className="custom-class sm:mt-10 mt-36 "
+                  ></FuzzyText>
+                </div>
+              ) : (
+                <div className="w-full lg:w-1/2">
+                  {selectedClient &&
+                    !showAddClient &&
+                    !showEditClient &&
+                    !showAddNutrition && (
+                      <ClientDetails
+                        setShowEditClient={setShowEditClient}
+                        setShowAddNutrition={setShowAddNutrition}
+                      />
+                    )}
+                </div>
+              )}
             </div>
           </div>
         </main>
@@ -112,7 +127,7 @@ export const Dashboard = () => {
           </div>
         </div>
       )}
-      // Edit
+
       {showEditClient && selectedClient && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">

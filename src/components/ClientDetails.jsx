@@ -1,3 +1,4 @@
+import { CircleFadingPlusIcon, Edit2Icon, FileLineChartIcon } from 'lucide-react';
 import { useClientContext } from '../context/ClientContext';
 
 const ClientDetails = ({ setShowEditClient, setShowAddNutrition }) => {
@@ -30,18 +31,18 @@ const ClientDetails = ({ setShowEditClient, setShowAddNutrition }) => {
       {/* Header */}
       <div className="p-4 border-b flex justify-between items-center">
         <h2 className="text-lg font-semibold text-gray-800">Client Details</h2>
-        <div className="space-x-2">
+        <div
+          className="space-x-2 flex
+         items-center justify-center gap-5"
+        >
           <button
             onClick={() => setShowEditClient(true)}
-            className="px-6 py-2 cursor-pointer  bg-indigo-600 text-white text-sm rounded hover:bg-indigo-700 transition"
+            className=" cursor-pointer"
           >
-            Edit
+            <Edit2Icon className="h-6 w-6 text-green-600 hover:text-green-700 transition" />
           </button>
-          <button
-            onClick={() => setShowAddNutrition(true)}
-            className="px-4 py-2 cursor-pointer  bg-green-600 text-white text-sm rounded hover:bg-green-700 transition"
-          >
-            Add Nutrition Data
+          <button onClick={() => setShowAddNutrition(true)} className="">
+            <CircleFadingPlusIcon  className="h-6 w-6 text-green-600 hover:text-green-700 transition" />
           </button>
         </div>
       </div>
