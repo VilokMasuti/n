@@ -1,53 +1,74 @@
+
 import { createContext, useContext, useEffect, useState } from 'react';
 import { initialClients } from '../utils';
 
+
 const ClientContext = createContext();
-// Sample initial data
+
 
 export const useClientContext = () => useContext(ClientContext);
 
+
 const ClientProvider = ({ children }) => {
+  // Client state initialization with localStorage persistence
   const [clients, setClients] = useState(() => {
-    // Try to get clients from localStorage
+    // Attempt to load saved clients from localStorage
     const savedClients = localStorage.getItem('clients');
+
     if (savedClients) {
+      // Parse and normalize existing clients (ensure nutritionData array exists)
       return JSON.parse(savedClients).map((client) => ({
         ...client,
-        nutritionData: client.nutritionData || [], // Add fallback
+        nutritionData: client.nutritionData || [], // Backward compatibility
       }));
     }
+
+    // Initialize with default clients if no localStorage data exists
     return initialClients.map((client) => ({
       ...client,
-      nutritionData: client.nutritionData || [], // Ensure array exists
+      nutritionData: client.nutritionData || [], // Ensure array initialization
     }));
   });
 
+  // Client selection state
   const [selectedClient, setSelectedClient] = useState(null);
+
+  // Client filtering states
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCondition, setFilterCondition] = useState('');
 
-  // Save clients to localStor
-  // In ClientProvider.js
+  /**
+   * Effect: Persist clients to localStorage and keep selected client in sync
+   * Triggers when clients or selectedClient changes
+   */
   useEffect(() => {
+    // 1. Save current clients state to localStorage
     localStorage.setItem('clients', JSON.stringify(clients));
+
+    // 2. Update selected client if it exists in the current clients array
     if (selectedClient) {
       const updatedClient = clients.find((c) => c.id === selectedClient.id);
       if (updatedClient) setSelectedClient(updatedClient);
     }
   }, [clients, selectedClient]);
-  // Add a new client
-  // Add a new client
+
+  /**
+   * Add a new client to the system
+   * @param {Object} client - New client data (without ID)
+   */
   const addClient = (client) => {
     const newClient = {
       ...client,
-      id: Date.now(),
-      nutritionData: [], // Explicitly initialize array
+      id: Date.now(), // Generate unique timestamp ID
+      nutritionData: [], // Initialize empty nutrition array
     };
     setClients([...clients, newClient]);
   };
 
-  // Update an existing client
-  // In ClientProvider.js updateClient function
+  /**
+   * Update existing client information
+   * @param {Object} updatedclient - Updated client object (must contain valid ID)
+   */
   const updateClient = (updatedclient) => {
     setClients(
       clients.map((client) =>
@@ -55,30 +76,40 @@ const ClientProvider = ({ children }) => {
       )
     );
 
-    // Update selected client if it's the one being edited
-    if (selectedClient && selectedClient.id === updatedclient.id) {
+    // If updated client is currently selected, update selected state
+    if (selectedClient?.id === updatedclient.id) {
       setSelectedClient(updatedclient);
     }
   };
 
-  // Delete a client
+  /**
+   * Delete a client by ID
+   * @param {number} clientId - ID of client to remove
+   */
   const deleteClient = (clientId) => {
     setClients(clients.filter((client) => client.id !== clientId));
-    if (selectedClient && selectedClient.id === clientId) {
+
+    // Deselect if deleted client was selected
+    if (selectedClient?.id === clientId) {
       setSelectedClient(null);
     }
   };
-  // Add nutrition data to a client
 
+  /**
+   * Add nutrition data to a specific client
+   * @param {number} clientId - Target client ID
+   * @param {Object} nutritionData - Nutrition entry data (without ID)
+   */
   const addNutritionData = (clientId, nutritionData) => {
-    setClients((clients) =>
-      clients.map((client) => {
+    // Functional update to ensure fresh state
+    setClients((prevClients) =>
+      prevClients.map((client) => {
         if (client.id === clientId) {
           return {
             ...client,
             nutritionData: [
-              ...(client.nutritionData || []),
-              { ...nutritionData, id: Date.now() },
+              ...(client.nutritionData || []), // Handle potential undefined
+              { ...nutritionData, id: Date.now() }, // Add unique ID
             ],
           };
         }
@@ -86,9 +117,9 @@ const ClientProvider = ({ children }) => {
       })
     );
 
-    // Update selected client with fresh state
+    // Update selected client's nutrition data immediately
     setSelectedClient((prevSelected) => {
-      if (prevSelected && prevSelected.id === clientId) {
+      if (prevSelected?.id === clientId) {
         return {
           ...prevSelected,
           nutritionData: [...prevSelected.nutritionData, nutritionData],
@@ -98,31 +129,46 @@ const ClientProvider = ({ children }) => {
     });
   };
 
-  // Filter clients based on search term and health condition
+  /**
+   * Filter clients based on current search and filter conditions
+   * @type {Array} Filtered client list
+   */
   const filteredClients = clients.filter((client) => {
-    const matchesSearchTerm = client.name
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase());
-    const matchesCondition =
+    // Normalize search strings for case-insensitive comparison
+    const searchLower = searchTerm.toLowerCase();
+    const filterLower = filterCondition.toLowerCase();
+
+    // Check name matches search term
+    const nameMatch = client.name.toLowerCase().includes(searchLower);
+
+    // Check health conditions match filter
+    const conditionMatch =
       filterCondition === '' ||
       client.healthConditions.some((condition) =>
-        condition.toLowerCase().includes(filterCondition.toLowerCase())
+        condition.toLowerCase().includes(filterLower)
       );
-    return matchesSearchTerm && matchesCondition;
+
+    return nameMatch && conditionMatch;
   });
 
+  // Expose state and methods via context provider
   return (
     <ClientContext.Provider
       value={{
+        // Client management methods
         addClient,
         updateClient,
         deleteClient,
         addNutritionData,
+
+        // Filtering state
         filterCondition,
         filteredClients,
         searchTerm,
         setSearchTerm,
         setFilterCondition,
+
+        // Client selection state
         selectedClient,
         setSelectedClient,
       }}
